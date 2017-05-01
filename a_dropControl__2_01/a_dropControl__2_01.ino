@@ -1,3 +1,4 @@
+/*new*/
 /*
   _____   _____    ____   _____     _____   ____   _   _  _______  _____    ____   _      
  |  __ \ |  __ \  / __ \ |  __ \   / ____| / __ \ | \ | ||__   __||  __ \  / __ \ | |     
@@ -158,26 +159,26 @@ const char ver[5] = "2.01";
 
 
 #include <MemoryFree.h>
-#include <digitalIOPerformance.h>
+//#include <digitalIOPerformance.h>
 #include <EEPROM.h>
 #include <Wire.h>  
-#include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(8,9,4,5,6,7);  // Set the LCD I2C address
 
 // Alexander Brevig's Button library
 // used for the digital keypad and the start button
-#include <Button.h>
-Button rm_button = Button(17,PULLDOWN);  //A3
+//#include <Button.h>
+//  Button rm_button = Button(17,PULLDOWN);  //A3
 
 
-#ifdef KEYPAD_DIGITAL
+//#ifdef KEYPAD_DIGITAL
   // Set pins for button switches
-  Button ok_button = Button(2,PULLDOWN);
+  /*Button ok_button = Button(2,PULLDOWN);
   Button rt_button = Button(3,PULLDOWN);
   Button dn_button = Button(4,PULLDOWN);
   Button up_button = Button(5,PULLDOWN);
-  Button lf_button = Button(6,PULLDOWN);
-#endif
+  Button lf_button = Button(6,PULLDOWN);*/
+//#endif
 
 
 #ifdef KEYPAD_ANALOGUE
@@ -208,28 +209,29 @@ Button rm_button = Button(17,PULLDOWN);  //A3
 
 
 // attached devices
-const byte numSolenoids   =  3;
+const byte numSolenoids   =  1;
 const byte camera  = 1;
 const byte focus   = 2;
 const byte flash   = 3;
 
 
 // Pins
-const byte sol1TriggerPin =  7; 
-const byte sol2TriggerPin =  8; 
-const byte sol3TriggerPin =  9; 
+const byte sol1TriggerPin =  13; 
+//const byte sol2TriggerPin =  8; 
+//const byte sol3TriggerPin =  9; 
 const byte flashTrigPin   = 10;
 const byte camTrigSHPin   = 11; 
 const byte camTrigFCPin   = 12; 
 
 // Analogue keypad
 const byte analogueKeypadPin     = A0;
-const byte BUTTON_NONE   = 0;
-const byte BUTTON_SELECT = 5;
-const byte BUTTON_RIGHT  = 4;
-const byte BUTTON_DOWN   = 3;
-const byte BUTTON_UP     = 2;
-const byte BUTTON_LEFT   = 1;
+
+const byte BUTTON_RIGHT  = 0;
+const byte BUTTON_UP     = 1;
+const byte BUTTON_DOWN   = 2;
+const byte BUTTON_LEFT   = 3;
+const byte BUTTON_SELECT = 4;
+const byte BUTTON_NONE   = 5;
 
 // flags
 const byte YES_NO       = 1;
@@ -532,8 +534,8 @@ void setup()
         pinMode(camTrigFCPin, OUTPUT);    digitalWrite(camTrigSHPin, LOW); 
         pinMode(flashTrigPin, OUTPUT);    digitalWrite(flashTrigPin, LOW); 
         pinMode(sol1TriggerPin, OUTPUT);  digitalWrite(sol1TriggerPin, LOW); 
-        pinMode(sol2TriggerPin, OUTPUT);  digitalWrite(sol2TriggerPin, LOW); 
-        pinMode(sol3TriggerPin, OUTPUT);  digitalWrite(sol3TriggerPin, LOW);
+        //pinMode(sol2TriggerPin, OUTPUT);  digitalWrite(sol2TriggerPin, LOW); 
+        //pinMode(sol3TriggerPin, OUTPUT);  digitalWrite(sol3TriggerPin, LOW);
         
         // analogue keypad pin
         //  set analog pin for input and turn on the internal pull-up resistor 
@@ -571,9 +573,9 @@ void setup()
         #ifdef KEYPAD_ANALOGUE
             lcd.print( "Analogue Keypad" );
         #endif
-        #ifdef KEYPAD_DIGITAL
-            lcd.print( "Digital Keypad" );
-        #endif        
+        //#ifdef KEYPAD_DIGITAL
+//            lcd.print( "Digital Keypad" );
+  //      #endif        
         delay(1500);    
         
         
@@ -666,7 +668,7 @@ void setup()
         while (!done)
         {
                 if ( (millis()- startTime)  > 2500    ) { done = true;}
-                if ( rm_button.uniquePress() )    { done = true;   }
+             //   if ( rm_button.uniquePress() )    { done = true;   }
 
         }
 
@@ -1509,7 +1511,7 @@ if ( strcmp(charMenu, "about" )==0 )
          
         strcat(menuList[4], ver );        // version
         strcat(menuList[5], __DATE__ );   // Date
-        numberToString( freeMemory(), 4); strcat(menuList[6], numberString );  // freeMem
+        numberToString( getFreeMemory(), 4); strcat(menuList[6], numberString );  // freeMem
         //strcpy_P(menuList[6], (char*)pgm_read_word(&common[2]) );  // EXIT  
 
 
