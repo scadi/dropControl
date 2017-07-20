@@ -26,7 +26,7 @@ void eraseEeprom()
 {
     lcd.clear();
     lcd.setCursor(0,0);  lcd.print( menuList[0] );
-    lcd.setCursor(3,2);  lcd.print(F("Erasing...."));         
+    lcd.setCursor(3,1);  lcd.print(F("Erasing...."));         
     
     // I don't really need to write to every memory location but I feel it will alleviate any possible problems due to random values.      
     int percent = 0;
@@ -34,7 +34,7 @@ void eraseEeprom()
     {
         eepromWriteByte(0,i);
         percent = i*100 / 1023;
-        lcd.setCursor(15,2);  lcd.print( percent ); lcd.print( "%" );
+        lcd.setCursor(15,1);  lcd.print( percent ); lcd.print( "%" );
     }
     
     // need to set the eeprom initialized flag
@@ -470,7 +470,7 @@ byte loadSaveDropData(byte savingData, byte mode, byte dataSet, byte displayScre
 
     if (displayScreen)
     {
-            lcd.setCursor(1, 2);
+            lcd.setCursor(1, 1);
             if (savingData)  
             {
                 if (allSavedOK)   {  lcd.print(F("SAVE COMPLETE"));    }
@@ -478,8 +478,8 @@ byte loadSaveDropData(byte savingData, byte mode, byte dataSet, byte displayScre
             }
             else                  {  lcd.print(F("LOAD COMPLETE"));    }   
           
-            lcd.setCursor(1, 3);   lcd.print(F("OK to EXIT"));                    
-            lcd.setCursor(0, 3);   lcd.write(rightArrow);
+            lcd.setCursor(1, 1);   lcd.print(F("OK to EXIT"));                    
+            lcd.setCursor(0, 1);   lcd.write(rightArrow);
        
 
      }

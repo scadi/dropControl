@@ -20,9 +20,9 @@
 byte checkButtonPress(boolean waitForRelease)
 {
         byte key = 0;
-        #ifdef KEYPAD_DIGITAL
-            key = getKeyPressDigital(true);
-        #endif 
+        //#ifdef KEYPAD_DIGITAL
+          //  key = getKeyPressDigital(true);
+        //#endif 
         #ifdef KEYPAD_ANALOGUE
             key = getKeyPressAnalogue(true);
         #endif 
@@ -62,13 +62,25 @@ byte checkButtonPress(boolean waitForRelease)
 
 byte getKeyPressAnalogue( boolean waitForRelease )
 {
-    int key[3];
+
+   int adc_key_in = analogRead(0);
+ if (adc_key_in > 1000) return BUTTON_NONE;
+ if (adc_key_in < 50)   return BUTTON_RIGHT; 
+ if (adc_key_in < 250)  return BUTTON_UP;
+ if (adc_key_in < 450)  return BUTTON_DOWN;
+ if (adc_key_in < 650)  return BUTTON_LEFT;
+ if (adc_key_in < 850)  return BUTTON_SELECT; 
+ 
+  return BUTTON_NONE;
+
+  
+/*    int key[3];
     int pinVal[3];
 
   pinVal[0] = analogRead(analogueKeypadPin);
   pinVal[1] = analogRead(analogueKeypadPin);
   pinVal[2] = analogRead(analogueKeypadPin);
-
+*/
 /*
       button values
       NONE =   910
@@ -78,7 +90,7 @@ byte getKeyPressAnalogue( boolean waitForRelease )
       UP =     164
       LEFT =    38
 */
-
+/*
   for(byte i=0; i<3; ++i)
   {
     key[i] = BUTTON_NONE;
@@ -115,6 +127,7 @@ byte getKeyPressAnalogue( boolean waitForRelease )
          buttonDebounce(10);  // 10 ms debounce 
     }
     return key[0]; 
+    */
 }  
 
 
@@ -130,7 +143,7 @@ byte getKeyPressAnalogue( boolean waitForRelease )
 * Returns: 
 *
 */
-void buttonDebounce(int t)
+/*void buttonDebounce(int t)
 {
    int count = t;
 
@@ -141,49 +154,7 @@ void buttonDebounce(int t)
        delay(1);
    }
 }
-
-#endif
-
-
-
-
-
-#ifdef KEYPAD_DIGITAL
-/*
-****************************************
-* Function getKeyPressDigital
-* Reads the digital keypad pins
-* 
-* passed: 
-* global:
-* 
-* Returns: the key pressed or 0 if no key is pressed
-* Uses Alexander Brevig's Button library (www.alexanderbrevig.com) - must be in the library folder
 */
-
-byte getKeyPressDigital(boolean waitForRelease)
-{
-      byte key = 0;
-      
-      if (waitForRelease)
-      {
-            if (up_button.uniquePress())  { key = BUTTON_UP;   }
-            if (dn_button.uniquePress())  { key = BUTTON_DOWN;   }
-            if (lf_button.uniquePress())  { key = BUTTON_LEFT;   }
-            if (rt_button.uniquePress())  { key = BUTTON_RIGHT;   }  
-            if (ok_button.uniquePress())  { key = BUTTON_SELECT;   }         
-      }
-
-      else
-      {
-            if (up_button.isPressed())  { key = BUTTON_UP;   }
-            if (dn_button.isPressed())  { key = BUTTON_DOWN;   }
-            if (lf_button.isPressed())  { key = BUTTON_LEFT;   }
-            if (rt_button.isPressed())  { key = BUTTON_RIGHT;   }  
-            if (ok_button.isPressed())  { key = BUTTON_SELECT;   }         
-      }
-      return key; 
-}
 #endif
 
 

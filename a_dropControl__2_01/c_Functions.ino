@@ -160,8 +160,8 @@ void triggerStop(int trig)
 void openSolenoid(byte s)
 {
     if (s==1) { digitalWrite(sol1TriggerPin, HIGH);    }
-    if (s==2) { digitalWrite(sol2TriggerPin, HIGH);    }
-    if (s==3) { digitalWrite(sol3TriggerPin, HIGH);    }
+    //if (s==2) { digitalWrite(sol2TriggerPin, HIGH);    }
+    //if (s==3) { digitalWrite(sol3TriggerPin, HIGH);    }
 }
 
 
@@ -180,8 +180,8 @@ void openSolenoid(byte s)
 void closeSolenoid(byte s)
 {
     if (s==1) { digitalWrite(sol1TriggerPin, LOW);    }
-    if (s==2) { digitalWrite(sol2TriggerPin, LOW);    }
-    if (s==3) { digitalWrite(sol3TriggerPin, LOW);    }
+//    if (s==2) { digitalWrite(sol2TriggerPin, LOW);    }
+//    if (s==3) { digitalWrite(sol3TriggerPin, LOW);    }
 }
 
 

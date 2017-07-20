@@ -78,23 +78,23 @@ int menuSelection()
          { 
              if (currentItem < numMenuItems) // can we move down?
              {
-                  if (arrowPos < 3)   // just move the cursor
-                  {
-                       //lcd.setCursor(0, arrowPos);  lcd.write(32);  // clear existing arrow
-                       arrowPos++; 
-                       currentItem++;
-                       // no change to topPos
-                       moveCursor(arrowPos-1, arrowPos);
-                       //lcd.setCursor(0, arrowPos);  lcd.write(rightArrow);
-                       
-                  }
-                  else
-                  // scroll the menu list down. Leave the cursor at line 3
-                  {
+                  if (arrowPos < 1)   // just move the cursor
+//                  {
+//                       //lcd.setCursor(0, arrowPos);  lcd.write(32);  // clear existing arrow
+//                       arrowPos++; 
+//                       currentItem++;
+//                       // no change to topPos
+//                       moveCursor(arrowPos-1, arrowPos);
+//                       //lcd.setCursor(0, arrowPos);  lcd.write(rightArrow);
+//                       
+//                  }
+//                  else
+//                  // scroll the menu list down. Leave the cursor at line 3
+//                  {
                     currentItem++;
                     topPos++;
                     drawMenu(topPos, arrowPos, numMenuItems);
-                  }  
+//                  }  
              }
 
          } // if ( keyPress == BUTTON_DOWN )
@@ -106,23 +106,23 @@ int menuSelection()
               if (currentItem > 1) // can we go up?
               {
                 
-                   if (arrowPos > 1) // just move the cursor up
-                   {
-                        //lcd.setCursor(0, arrowPos);  lcd.write(32);  // clear existing arrow
-                        arrowPos--; 
-                        currentItem--;
-                        // no change to topPos
-                        moveCursor(arrowPos+1, arrowPos);
-                        //lcd.setCursor(0, arrowPos);  lcd.write(rightArrow);
-                   }            
-                   else
-                   // need to scroll the menu up one
-                   {
+//                   if (arrowPos > 1) // just move the cursor up
+//                   {
+//                        //lcd.setCursor(0, arrowPos);  lcd.write(32);  // clear existing arrow
+//                        arrowPos--; 
+//                        currentItem--;
+//                        // no change to topPos
+//                        moveCursor(arrowPos+1, arrowPos);
+//                        //lcd.setCursor(0, arrowPos);  lcd.write(rightArrow);
+//                   }            
+//                   else
+//                   // need to scroll the menu up one
+//                   {
                         // no change to arrowPos
                         currentItem--;
                         topPos--;
                         drawMenu( topPos, arrowPos, numMenuItems);
-                   }               
+//                   }               
               }
 
          } // if ( keyPress == BUTTON_UP)
@@ -153,7 +153,7 @@ int menuSelection()
 // top=topPos, ap=arrowPos, nmi = numMenuItems
 void drawMenu(byte top, byte ap, byte nmi)
 {
-      if (nmi>3) { nmi=3;} 
+      if (nmi>3) { nmi=1;} 
       for (int i = 1; i <= nmi; i++)
       {
             lcd.setCursor(0, i);  lcd.print(tenSpaces); lcd.print(tenSpaces);  // 20 spaces to clear the line

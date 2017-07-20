@@ -175,7 +175,7 @@ void createLoadSaveMenuStrings()
         // find the default data set
         val = eepromReadByte(eep_DEFAULT_SAVED_DATA_ADDRESS[mode]);
         if (val >=1 and val <=3) {   strcat(menuList[val]," *") ;    }
-        numMenuItems = 4;  
+        numMenuItems = 4;
 }
 
 

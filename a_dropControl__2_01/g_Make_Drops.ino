@@ -116,7 +116,7 @@ void makeDrops()
         lcd.clear();
         lcd.setCursor(0, 0);  lcd.print(F("ERROR")); 
         lcd.setCursor(0, 1);  lcd.print(F("Not FM. Not QM"));
-        lcd.setCursor(0, 2);  lcd.print(F("Need to reboot"));
+        lcd.setCursor(0, 1);  lcd.print(F("Need to reboot"));
         while(1) {;}
     }
     
@@ -128,23 +128,23 @@ void makeDrops()
         lcd.clear();
         lcd.setCursor(0, 0);  lcd.print(F("Full Mode"));  
         lcd.setCursor(1, 1);  lcd.print(F("Drops="));  lcd.print(numDrops[mode]); 
-        lcd.setCursor(1, 2);  lcd.print(F("ND=0"));
+        lcd.setCursor(1, 1);  lcd.print(F("ND=0"));
         lcd.setCursor(11, 1); lcd.print(F("CTS=")); numberToString( tmpCamTriggerStart, 4 );   lcd.print(numberString);
-        lcd.setCursor(11, 2); lcd.print(F("FTS=")); numberToString( tmpFlashTriggerStart, 4 ); lcd.print(numberString);
+        lcd.setCursor(11, 1); lcd.print(F("FTS=")); numberToString( tmpFlashTriggerStart, 4 ); lcd.print(numberString);
     }
     if (mode==QUICK_MODE)
     {
         lcd.clear();
         lcd.setCursor(1, 0);   lcd.print(F(" D=0"));    
         lcd.setCursor(1, 1);   lcd.print(F("CT="));     lcd.print(tmpCamTriggerStart);
-        lcd.setCursor(1, 2);   lcd.print(F("FT="));     lcd.print(tmpFlashTriggerStart);
+        lcd.setCursor(1, 1);   lcd.print(F("FT="));     lcd.print(tmpFlashTriggerStart);
 
         lcd.setCursor(10, 0);                            lcd.print(F("1"));  
         if (numDrops[mode] >1)  { lcd.setCursor(10, 1);  lcd.print(F("2"));      }
-        if (numDrops[mode] >2)  { lcd.setCursor(10, 2);  lcd.print(F("3"));      }    
+        if (numDrops[mode] >2)  { lcd.setCursor(10, 1);  lcd.print(F("3"));      }    
     }    
-    lcd.setCursor(0, 3);   lcd.write(126);  
-    lcd.setCursor(1, 3);   lcd.print(F("STOP      "));
+    lcd.setCursor(0, 1);   lcd.write(126);  
+    lcd.setCursor(1, 1);   lcd.print(F("STOP      "));
 
     
 
@@ -163,7 +163,7 @@ void makeDrops()
         
         lcd.setCursor(4, 0);   lcd.print(loopCount); 
         lcd.setCursor(4, 1);   lcd.print(tmpCamTriggerStart);
-        lcd.setCursor(4, 2);   lcd.print(tmpFlashTriggerStart);
+        lcd.setCursor(4, 1);   lcd.print(tmpFlashTriggerStart);
 
         lcd.setCursor(12, 0); numberToString( tmpDropStartTime[1], 4 );                       lcd.print( numberString );                              
         lcd.setCursor(17, 0); numberToString( tmpDropStopTime[1]-tmpDropStartTime[1], 3 );    lcd.print( numberString );
@@ -175,17 +175,17 @@ void makeDrops()
         }
         if (numDrops[mode] >2)
         { 
-            lcd.setCursor(12, 2); numberToString( tmpDropStartTime[3], 4 );                      lcd.print( numberString );
-            lcd.setCursor(17, 2); numberToString( tmpDropStopTime[3]-tmpDropStartTime[3], 3 );   lcd.print( numberString ); 
+            lcd.setCursor(12, 1); numberToString( tmpDropStartTime[3], 4 );                      lcd.print( numberString );
+            lcd.setCursor(17, 1); numberToString( tmpDropStopTime[3]-tmpDropStartTime[3], 3 );   lcd.print( numberString ); 
         }
 
     }
     
     else if (mode==FULL_MODE)
     {
-        lcd.setCursor(4, 2);  lcd.print( loopCount);
+        lcd.setCursor(4, 1);  lcd.print( loopCount);
         lcd.setCursor(11, 1); lcd.print(F("CTS=")); numberToString( tmpCamTriggerStart, 5 );   lcd.print(numberString);
-        lcd.setCursor(11, 2); lcd.print(F("FTS=")); numberToString( tmpFlashTriggerStart, 5 ); lcd.print(numberString); 
+        lcd.setCursor(11, 1); lcd.print(F("FTS=")); numberToString( tmpFlashTriggerStart, 5 ); lcd.print(numberString); 
     }
 
     else
@@ -194,7 +194,7 @@ void makeDrops()
         lcd.clear();
         lcd.setCursor(0, 0);  lcd.print(F("ERROR")); 
         lcd.setCursor(0, 1);  lcd.print(F("Not FM. Not QM"));
-        lcd.setCursor(0, 2);  lcd.print(F("Need to reboot"));
+        lcd.setCursor(0, 1);  lcd.print(F("Need to reboot"));
         while(1) {;}  
     }
 
@@ -213,21 +213,21 @@ void makeDrops()
     if (usingRemoteSwitch)
     {
          // wait for the button to be pressed
-         lcd.setCursor(11, 3);  lcd.print(F("PRESS REM"));
+         lcd.setCursor(11, 1);  lcd.print(F("PRESS REM"));
          done=false; 
          while (  !done  )
          { 
-             if (rm_button.uniquePress())  { done=true; }
+          //   if (rm_button.uniquePress())  { done=true; }
              if (checkButtonPress( false)==BUTTON_SELECT ) { aborted = true; done = true;} 
          }
-        lcd.setCursor(11, 3);  lcd.print(F("         "));         
+        lcd.setCursor(11, 1);  lcd.print(F("         "));         
     }
 
     // if not using the remote switch we wait the time set by loopDelay 
     else
     {
           // wait for loopDelay
-          lcd.setCursor(11, 3);  lcd.print(F("Waiting  ")); 
+          lcd.setCursor(11, 1);  lcd.print(F("Waiting  ")); 
     
           unsigned long startTime = millis();
           unsigned long startWaiting = startTime;
@@ -243,13 +243,13 @@ void makeDrops()
 
                 if (nowTime - startWaiting >250 )            
                 { 
-                     lcd.setCursor(19, 3);   lcd.write( timerChar[count] );
+                     lcd.setCursor(15, 1);   lcd.write( timerChar[count] );
                      count++; if (count >3) {count = 0;} 
                      startWaiting = millis();
                 }
             
                 // pause
-                if (rm_button.uniquePress() )                
+              /*  if (rm_button.uniquePress() )                
                 {    lcd.setCursor(11, 3);  lcd.print(F("   Paused"));         // The space erases the timerChar
                      delay (100);
                      done2 = false;
@@ -261,9 +261,9 @@ void makeDrops()
                      }
                      delay (100);
                      lcd.setCursor(11, 3);  lcd.write( timerChar[count] ); lcd.print(F("Waiting")); 
-                }            
+                }            */
           } // while (!done )
-          lcd.setCursor(19, 3); lcd.write(32);         
+          lcd.setCursor(15, 1); lcd.write(32);         
 
     }   
         
@@ -284,7 +284,7 @@ void makeDrops()
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // start the drop sequence
 
-    lcd.setCursor(11, 3);  lcd.print(F("   Active"));
+    lcd.setCursor(11, 1);  lcd.print(F("   Active"));
 
 
  

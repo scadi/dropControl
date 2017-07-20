@@ -290,7 +290,7 @@ byte    arrowPos               = 1;           // vertical position of the arrow
 byte currentItem               = 0;
 byte topPos                    = 0;           // value of the menu item at the top of the screen
 
-char numberString[6]           = "";         // used to convert a number to a string for displaying on the LCD
+char numberString[6]           = "2";         // used to convert a number to a string for displaying on the LCD
 const char tenSpaces[11]       = "          ";  // I might move this to program memory later
 
 
@@ -541,7 +541,7 @@ void setup()
         //  set analog pin for input and turn on the internal pull-up resistor 
         pinMode(analogueKeypadPin, INPUT_PULLUP); // 
         
-        lcd.begin(20, 4);
+        lcd.begin(16, 2);
         lcd.clear(); 
         //  custom character used in the timer animation - this is a "\". The "\" chr is not available in the LCD chr list
         byte line1[8] =  { B00000, B10000, B01000, B00100, B00010, B00001, B00000, B00000 };
@@ -566,10 +566,10 @@ void setup()
         
          // version
         strcpy_P(menuList[1], (char*)pgm_read_word(&about[4]) );
-        lcd.setCursor(0, 2);   lcd.print( menuList[1] ); lcd.print( ver );
+        lcd.setCursor(0, 1);   lcd.print( menuList[1] ); lcd.print( ver );
         delay(1000);         
         
-        lcd.setCursor(0, 3);   
+        lcd.setCursor(0, 1);   
         #ifdef KEYPAD_ANALOGUE
             lcd.print( "Analogue Keypad" );
         #endif
@@ -589,8 +589,8 @@ void setup()
         {
             // initialize eeprom
             //lcd.clear();
-            lcd.setCursor(0, 2);   lcd.print(F("Please wait"));
-            lcd.setCursor(0, 3);   lcd.print(F("Initializing..."));
+            lcd.setCursor(0, 1);   lcd.print(F("Please wait"));
+            lcd.setCursor(0, 1);   lcd.print(F("Initializing..."));
 
             // I don't really need to write to every memory location but I feel it will alleviate any possible problems due to random values.      
             int percent = 0;
@@ -598,7 +598,7 @@ void setup()
             {
                 eepromWriteByte(0,i);
                 percent = i*100 / 1023;
-                lcd.setCursor(15,3);  lcd.print( percent ); lcd.print( "% " );
+                lcd.setCursor(15,1);  lcd.print( percent ); lcd.print( "% " );
             }
             // need to set the eeprom initialized flag
             eepromWriteByte(99, eep_INIT_FLAG_ADDRESS);  
@@ -615,8 +615,8 @@ void setup()
 
 
         // clear lines 2 and 3.
-        lcd.setCursor(0,2);  lcd.print(tenSpaces); lcd.print(tenSpaces);
-        lcd.setCursor(0,3);  lcd.print(tenSpaces); lcd.print(tenSpaces);
+        lcd.setCursor(0,1);  lcd.print(tenSpaces); lcd.print(tenSpaces);
+        // lcd.setCursor(0,3);  lcd.print(tenSpaces); lcd.print(tenSpaces);
         
 
 
@@ -633,7 +633,7 @@ void setup()
         
         if (checkButtonPress(false)==BUTTON_LEFT )  
         {
-            lcd.setCursor(0,3);  lcd.print(F("Default data loaded"));
+            lcd.setCursor(0,1);  lcd.print(F("Default data loaded"));
         }
         else
         {
@@ -647,14 +647,14 @@ void setup()
                     {
                         // we have data to load
                         loadedOK = loadSaveDropData( LOAD_DATA, mode, tmpDefaultSet, DO_NOT_SHOW_SCREEN );
-                        if (loadedOK) { lcd.setCursor(0,3);  lcd.print(F("User data loaded"));      }
-                        else          { lcd.setCursor(0,3);  lcd.print(F("Unable to load data!"));  }                
+                        if (loadedOK) { lcd.setCursor(0,1);  lcd.print(F("User data loaded"));      }
+                        else          { lcd.setCursor(0,1);  lcd.print(F("Unable to load data!"));  }                
                     }
                     //  no saved data to load. Num times written is <=0  
-                    else { lcd.setCursor(0,3);  lcd.print(F("Error E7")); }
+                    else { lcd.setCursor(0,1);  lcd.print(F("Error E7")); }
             }
             // the default value is out of range. Should 1, 2, or 3
-            else  { lcd.setCursor(0,3);  lcd.print(F("No default user data"));    } 
+            else  { lcd.setCursor(0,1);  lcd.print(F("No default user data"));    } 
         }
 
          
@@ -971,7 +971,7 @@ Full mode allows for up to 9 drops
              if (selected >0 && selected <5 )
              {
                 error = checkOverlap();
-                lcd.setCursor(18,0);
+                lcd.setCursor(16,0);
                 if (error) {  lcd.print(F( "OL" ));  }  
                 else       {  lcd.print(F( "  " )); } 
              }
@@ -1431,8 +1431,8 @@ Sets the default saved drop data. The values stored in the default memory set wi
                        eepromWriteByte(selected, eep_DEFAULT_SAVED_DATA_ADDRESS[mode]);
                     
                        lcd.setCursor(1, 1);   lcd.print(F("Default now = set ")); lcd.print( selected); 
-                       lcd.setCursor(1, 3);   lcd.print(F("EXIT"));                    
-                       lcd.setCursor(0, 3);   lcd.write(rightArrow);
+                       lcd.setCursor(1, 1);   lcd.print(F("EXIT"));                    
+                       lcd.setCursor(0, 1);   lcd.write(rightArrow);
             
                        selected = 4;
                   }            
