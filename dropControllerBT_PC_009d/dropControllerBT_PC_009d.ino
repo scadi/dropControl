@@ -247,38 +247,55 @@ void setup()
     pinMode(cam_TrigShutterPin, OUTPUT); digitalWrite(cam_TrigShutterPin, LOW); 
     pinMode(cam_TrigFocusPin, OUTPUT);   digitalWrite(cam_TrigFocusPin, LOW); 
     pinMode(flash_TrigPin, OUTPUT);      digitalWrite(flash_TrigPin, LOW);      
-  
-    
+ 
+    initLedVer();
+    // LED_WAITING is turned on when the HELLO message is received from the control app.
+ 
+    initialise();
+}
+
+void initLedVer(){
     // flash the LED to show version number - verNum
     // Now that I am at version 9 this is no longer a good solution and I may remove it
-    
+
     int versionNumber = atoi(verNum);
     byte loopCount = 0;
     while (loopCount < versionNumber)
     {
-       digitalWrite(LED_WAITING, HIGH); delay (250); digitalWrite(LED_WAITING, LOW); delay (250);
+       ledWaiting();
        loopCount++;
     }
-     
-    // LED_WAITING is turned on when the HELLO message is received from the control app.
-    
-    initialise();
-     
-   
-     
-     
 }
 
+void ledWaiting(){
+   digitalWrite(LED_WAITING, HIGH); delay (250); digitalWrite(LED_WAITING, LOW); delay (250);
+}
+
+void ledActive(){
+   digitalWrite(LED_ACTIVE, HIGH); delay (250); digitalWrite(LED_ACTIVE, LOW); delay (250);
+}
 
 void loop() 
 {
-     
-     if      (DEVICE_TYPE==1) { recvWithStartEndMarkersUSB();   }
-     else if (DEVICE_TYPE==2) { recvWithStartEndMarkersBT();    }
+
+     if      (DEVICE_TYPE==1) {
+      recvWithStartEndMarkersUSB();
+     }     else if (DEVICE_TYPE==2) {
+      recvWithStartEndMarkersBT();
+     }
      
      if (haveNewData) { parseNewData(); }   // this doesn't actually parse data. It copies it to temp variables
                                             // Also sets haveNewDrop to TRUE when it gets an "EOD" command. "EOD" is the End Of Data flag. 
- 
+    prepareOneDrop();
+    if ( dropDataIsOK() )              // check we have all the drop data. This is a basic check only.
+         {
+               digitalWrite(LED_WAITING, LOW);
+               digitalWrite(LED_ACTIVE, HIGH);
+               makeDrops();
+               delay(100);
+               sendFinishedFlag();
+         }
+
       if(haveNewDrop)                       
       {      
          parseDropData();                   // copy the temp received data variables to the drop data arrays.
@@ -348,7 +365,37 @@ void initialise()
       haveAllDrops = false;
 }
 
-
+void prepareOneDrop(){
+      numDrops = 1;
+      numDropsCheck = 1;
+      haveNewDrop = true; 
+      dropCommand[1][0]='D';
+      dropCommand[1][1]=1;
+      dropCommand[1][2]=',';
+      dropCommand[1][3]=1;
+      dropCommand[1][4]=',';
+      dropCommand[1][5]=0;
+      dropCommand[1][6]=1;
+      dropCommand[1][7]=0;
+      dropCommand[1][8]=0;
+      dropCommand[1][9]=',';
+      dropCommand[1][10]=0;
+      dropCommand[1][11]=0;
+      dropCommand[1][12]=5;
+      dropCommand[1][13]=0;
+      
+      haveFT = true;
+      haveCT = true;
+      haveML = true;
+      haveAllDrops = true;
+      flashTriggerTime_Start = 100;
+      flashTriggerTime_Stop = flashTriggerTime_Start + 100;
+      cameraTriggerTime_Start = 430;
+      cameraTriggerTime_Stop = cameraTriggerTime_Start + 30;
+      mirrorLockupDelay = 500; 
+      dropStartTime[1] = 100;
+      dropStopTime[1] = dropStartTime[1] + 100;
+}
 
 
 /*
